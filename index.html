@@ -8,7 +8,7 @@
     <h1>Filtered List</h1>
     <hr />
     <h2>1. Import data</h2>
-    <textarea ng-model="dataToImport" placeholder="Import Area"></textarea>
+    <textarea ng-model="dataToImport" placeholder="Copy/Paste CSV Data"></textarea><br />
     <button ng-click="importData()">Import</button>
     <div ng-show="data.headers">
       Which column do you want to search through?
@@ -22,16 +22,22 @@
 
     <div class="float-left">
       <h2>2. Search through data</h2>
-      <input ng-model="searchToAdd" type="text" placeholder="Search" ng-keydown="keyboardMoveItem($event, searchToAdd, 'toAdd', 'added')" />
+      <div class="margin-top-medium">
+        Available data to be exported (click to add)<br />
+        <input ng-model="searchToAdd" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, searchToAdd, 'toAdd', 'added')" />
+      </div>
       <div class="data-item" ng-repeat="item in data.toAdd | filter:searchToAdd" ng-click="moveItem(item, 'toAdd', 'added')">{{item[column]}}</div>
     </div>
 
     <div class="float-right">
       <h2>3. Export data</h2>
-      <textarea ng-model="dataToExport" placeholder="Export Area"></textarea><br />
+      <textarea ng-model="dataToExport" placeholder="Exported Data appears here as CSV"></textarea><br />
       <button  ng-click="exportData()">Export</button><br />
-      <input ng-model="searchAdded" type="text" placeholder="Search" ng-keydown="keyboardMoveItem($event, searchAdded, 'added', 'toAdd')" />
-      <div class="data-item" ng-repeat="item in data.added | filter:searchAdded" ng-click="moveItem(item, 'added', 'toAdd')">{{item[column]}}</div>
+      <div class="margin-top-medium">
+        Data to be exported (click to remove)<br />
+        <input ng-model="searchAdded" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, searchAdded, 'added', 'toAdd')" />
+        <div class="data-item" ng-repeat="item in data.added | filter:searchAdded" ng-click="moveItem(item, 'added', 'toAdd')">{{item[column]}}</div>
+      </div>
     </div>
     <script src="./angular.min.js"></script>
     <script src="./csv.js"></script>

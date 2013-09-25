@@ -12,3 +12,7 @@ body {
 .data-item {
   cursor: pointer;
 }
+
+.margin-top-medium {
+  margin-top: 24px;
+}
