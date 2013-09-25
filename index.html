@@ -12,7 +12,7 @@
     <textarea ng-model="dataToImport" placeholder="Copy/Paste CSV Data"></textarea><br />
     <a class="btn" ng-click="importData()">Import</a>
     <div ng-show="data.headers">
-      Which column do you want to search through?
+      Which column do you want to display?
       <form name="header-selection">
         <span ng-repeat="header in data.headers">
           <label for="{{$index}}">

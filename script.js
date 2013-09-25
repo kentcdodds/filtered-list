@@ -27,6 +27,9 @@ angular.module('fl', []).controller('MainCtrl', function($scope, $filter) {
   }
 
   $scope.moveItem = function(item, from, to) {
+    if (!item) {
+      return;
+    }
     $scope.data[to].unshift(item);
     $scope.data[from].splice($scope.data[from].indexOf(item), 1);
   }
@@ -40,6 +43,10 @@ angular.module('fl', []).controller('MainCtrl', function($scope, $filter) {
   $scope.keyboardMoveItem = function(event, searchProp, from, to) {
     if (event.keyCode === 13) {
       var item = $filter('filter')($scope.data[from], $scope[searchProp])[0];
+      if (!item) {
+        alert($scope[searchProp] + ' is not in this list');
+        return;
+      }
       $scope.moveItem(item, from, to);
       $scope[searchProp] = '';
     }
