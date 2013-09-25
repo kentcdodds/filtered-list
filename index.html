@@ -3,19 +3,22 @@
   <head>
     <title>Filtered List</title>
   </head>
+  <link rel="stylesheet" href="./bootstrap.min.css">
   <link rel="stylesheet" href="./styles.css">
   <body ng-controller="MainCtrl">
     <h1>Filtered List</h1>
     <hr />
     <h2>1. Import data</h2>
     <textarea ng-model="dataToImport" placeholder="Copy/Paste CSV Data"></textarea><br />
-    <button ng-click="importData()">Import</button>
+    <a class="btn" ng-click="importData()">Import</a>
     <div ng-show="data.headers">
       Which column do you want to search through?
       <form name="header-selection">
         <span ng-repeat="header in data.headers">
-          <br/>
-          <input type="radio" name="header" ng-model="$parent.column" value="{{$index}}"> <label for="{{$index}}">{{header}}</label>
+          <label for="{{$index}}">
+            <input type="radio" name="header" ng-model="$parent.column" value="{{$index}}">
+            {{header}}
+          </label>
         </span>
       </form>
     </div>
@@ -32,7 +35,7 @@
     <div class="float-right">
       <h2>3. Export data</h2>
       <textarea ng-model="dataToExport" placeholder="Exported Data appears here as CSV"></textarea><br />
-      <button  ng-click="exportData()">Export</button><br />
+      <a class="btn" ng-click="exportData()">Export</a><br />
       <div class="margin-top-medium">
         Data to be exported (click to remove)<br />
         <input ng-model="searchAdded" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, 'searchAdded', 'added', 'toAdd')" />
