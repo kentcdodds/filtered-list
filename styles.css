@@ -1,0 +1,14 @@
+body {
+  margin: 50px;
+}
+.float-left {
+  float: left;
+  margin-bottom: 50px;
+}
+.float-right {
+  float: right;
+  margin-bottom: 50px;
+}
+.data-item {
+  cursor: pointer;
+}

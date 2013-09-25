@@ -3,99 +3,38 @@
   <head>
     <title>Filtered List</title>
   </head>
-  <style>
-    .float-left {
-      float: left;
-      margin-left: 20px;
-    }
-    .float-right {
-      float: right;
-      margin-right: 20px;
-    }
-  </style>
+  <link rel="stylesheet" href="./styles.css">
   <body ng-controller="MainCtrl">
     <h1>Filtered List</h1>
     <hr />
+    <h2>1. Import data</h2>
+    <textarea ng-model="dataToImport" placeholder="Import Area"></textarea>
+    <button ng-click="importData()">Import</button>
+    <div ng-show="data.headers">
+      Which column do you want to search through?
+      <form name="header-selection">
+        <span ng-repeat="header in data.headers">
+          <br/>
+          <input type="radio" name="header" ng-model="$parent.column" value="{{$index}}"> <label for="{{$index}}">{{header}}</label>
+        </span>
+      </form>
+    </div>
+
     <div class="float-left">
-      <h2>1. Import data</h2>
-      <textarea ng-model="dataToImport" placeholder="Import Area"></textarea>
-      <div>
-        Which column do you want to search through?
-        <form name="header-selection">
-          <span ng-repeat="header in data.headers">
-            <br/>
-            <input type="radio" name="header" ng-model="$parent.column" value="{{$index}}"> <label for="{{$index}}">{{header}}</label>
-          </span>
-        </form>
-      </div>
-      <h2>3. Export data</h2>
-      <textarea ng-model="dataToExport" placeholder="Export Area"></textarea>
+      <h2>2. Search through data</h2>
+      <input ng-model="searchToAdd" type="text" placeholder="Search" ng-keydown="keyboardMoveItem($event, searchToAdd, 'toAdd', 'added')" />
+      <div class="data-item" ng-repeat="item in data.toAdd | filter:searchToAdd" ng-click="moveItem(item, 'toAdd', 'added')">{{item[column]}}</div>
     </div>
 
     <div class="float-right">
-      <h2>2. Search through data</h2>
-      <input ng-model="search" type="text" placeholder="Search" />
-      <div ng-repeat="item in data | filter:search" ng-click="addItem(item)"><input type="checkbox" ng-model="item.checked" ng-click="addItem(item)">{{item[column]}}</div>
+      <h2>3. Export data</h2>
+      <textarea ng-model="dataToExport" placeholder="Export Area"></textarea><br />
+      <button  ng-click="exportData()">Export</button><br />
+      <input ng-model="searchAdded" type="text" placeholder="Search" ng-keydown="keyboardMoveItem($event, searchAdded, 'added', 'toAdd')" />
+      <div class="data-item" ng-repeat="item in data.added | filter:searchAdded" ng-click="moveItem(item, 'added', 'toAdd')">{{item[column]}}</div>
     </div>
     <script src="./angular.min.js"></script>
     <script src="./csv.js"></script>
-    <script>
-      angular.module('fl', []).controller('MainCtrl', function($scope) {
-        $scope.data = {};
-        $scope.column = 0;
-
-        function setObjectInStorage(itemName, object, noJson) {
-          if (localStorage) {
-            var valToSet = noJson ? object : JSON.stringify(object)
-            localStorage.setItem(itemName, valToSet);
-          }
-        }
-
-        function getObjectInStorage(itemName, noJson) {
-          if (localStorage) {
-            return noJson ? localStorage.getItem(itemName) : JSON.parse(localStorage.getItem(itemName));
-          }
-        }
-
-        $scope.$watch('dataToImport', function(newVal) {
-          if (!newVal) {
-            setObjectInStorage('filteredList-data', newVal);
-            return;
-          }
-          $scope.data = CSV.parse($scope.dataToImport, {headers: true});
-            setObjectInStorage('filteredList-data', $scope.dataToImport);
-        });
-        $scope.addItem = function(item) {
-          item.checked = true;
-          $scope.dataToExportArray.push([item]);
-        }
-        $scope.inExport = function(value) {
-          return $scope.dataToExportArray.indexOf(value) > 0;
-        }
-
-        $scope.dataToImport = getObjectInStorage('filteredList-data');
-
-        $scope.$watch('dataToExportArray', function(newVal) {
-          setObjectInStorage('filteredList-export-data', newVal);
-          if (!newVal) {
-            return;
-          }
-          $scope.dataToExport = CSV.stringify($scope.dataToExportArray);
-        }, true);
-
-        $scope.$watch('dataToExport', function(newVal) {
-          if (newVal === '') {
-            setObjectInStorage('filteredList-export-data', newVal);
-          }
-        });
-
-        $scope.dataToExportArray = getObjectInStorage('filteredList-export-data') || [];
-
-        $scope.$watch('column', function(newVal) {
-          setObjectInStorage('filteredList-column', newVal, true);
-        });
-        $scope.column = getObjectInStorage('filteredList-column', true);
-      });
-    </script>
+    <script src="./script.js"></script>
   </body>
 </html>
