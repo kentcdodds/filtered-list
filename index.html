@@ -1,0 +1,91 @@
+<!doctype html>
+<html ng-app="fl">
+  <head>
+    <title>Filtered List</title>
+  </head>
+  <style>
+    .float-left {
+      float: left;
+    }
+    .float-right {
+      float: right;
+    }
+  </style>
+  <body ng-controller="MainCtrl">
+    <h1>Filtered List</h1>
+    <hr />
+    <div class="float-left">
+      <h2>1. Import data</h2>
+      <textarea ng-model="dataToImport" placeholder="Import Area"></textarea>
+      <div>
+        Which column do you want to search through?
+        <form name="header-selection">
+          <span ng-repeat="header in data.headers">
+            <br/>
+            <input type="radio" name="header" ng-model="$parent.column" value="{{$index}}"> <label for="{{$index}}">{{header}}</label>
+          </span>
+        </form>
+      </div>
+      <h2>3. Export data</h2>
+      <textarea ng-model="dataToExport" placeholder="Export Area"></textarea>
+    </div>
+
+    <div class="float-right">
+      <h2>2. Search through data</h2>
+      <input ng-model="search" type="text" placeholder="Search" />
+      <div ng-repeat="item in data | filter:search" ng-click="addItem(item)">{{item[column]}}</div>
+    </div>
+    <script src="./angular.min.js"></script>
+    <script src="./csv.js"></script>
+    <script>
+      angular.module('fl', []).controller('MainCtrl', function($scope) {
+        $scope.data = {};
+        $scope.column = 0;
+
+        function setObjectInStorage(itemName, object, noJson) {
+          if (localStorage) {
+            var valToSet = noJson ? object : JSON.stringify(object)
+            localStorage.setItem(itemName, valToSet);
+          }
+        }
+
+        function getObjectInStorage(itemName, noJson) {
+          if (localStorage) {
+            return noJson ? localStorage.getItem(itemName) : JSON.parse(localStorage.getItem(itemName));
+          }
+        }
+
+        $scope.$watch('dataToImport', function(newVal) {
+          if (!newVal) {
+            return;
+          }
+          $scope.data = CSV.parse($scope.dataToImport, {headers: true});
+            setObjectInStorage('filteredList-data', $scope.dataToImport);
+        });
+        $scope.addItem = function(item) {
+          $scope.dataToExportArray.push([item]);
+        }
+        $scope.inExport = function(value) {
+          return $scope.dataToExportArray.indexOf(value) > 0;
+        }
+
+        $scope.dataToImport = getObjectInStorage('filteredList-data');
+
+        $scope.$watch('dataToExportArray', function(newVal) {
+          if (!newVal) {
+            return;
+          }
+          setObjectInStorage('filteredList-export-data', newVal);
+          $scope.dataToExport = CSV.stringify($scope.dataToExportArray);
+        });
+
+        $scope.dataToExportArray = getObjectInStorage('filteredList-export-data') || [];
+
+        $scope.$watch('column', function(newVal) {
+          setObjectInStorage('filteredList-column', newVal, true);
+        });
+        $scope.column = getObjectInStorage('filteredList-column', true);
+      });
+    </script>
+  </body>
+</html>
