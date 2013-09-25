@@ -6,9 +6,11 @@
   <style>
     .float-left {
       float: left;
+      margin-left: 20px;
     }
     .float-right {
       float: right;
+      margin-right: 20px;
     }
   </style>
   <body ng-controller="MainCtrl">
@@ -33,7 +35,7 @@
     <div class="float-right">
       <h2>2. Search through data</h2>
       <input ng-model="search" type="text" placeholder="Search" />
-      <div ng-repeat="item in data | filter:search" ng-click="addItem(item)">{{item[column]}}</div>
+      <div ng-repeat="item in data | filter:search" ng-click="addItem(item)"><input type="checkbox" ng-model="item.checked" ng-click="addItem(item)">{{item[column]}}</div>
     </div>
     <script src="./angular.min.js"></script>
     <script src="./csv.js"></script>
@@ -57,12 +59,14 @@
 
         $scope.$watch('dataToImport', function(newVal) {
           if (!newVal) {
+            setObjectInStorage('filteredList-data', newVal);
             return;
           }
           $scope.data = CSV.parse($scope.dataToImport, {headers: true});
             setObjectInStorage('filteredList-data', $scope.dataToImport);
         });
         $scope.addItem = function(item) {
+          item.checked = true;
           $scope.dataToExportArray.push([item]);
         }
         $scope.inExport = function(value) {
@@ -72,11 +76,17 @@
         $scope.dataToImport = getObjectInStorage('filteredList-data');
 
         $scope.$watch('dataToExportArray', function(newVal) {
+          setObjectInStorage('filteredList-export-data', newVal);
           if (!newVal) {
             return;
           }
-          setObjectInStorage('filteredList-export-data', newVal);
           $scope.dataToExport = CSV.stringify($scope.dataToExportArray);
+        }, true);
+
+        $scope.$watch('dataToExport', function(newVal) {
+          if (newVal === '') {
+            setObjectInStorage('filteredList-export-data', newVal);
+          }
         });
 
         $scope.dataToExportArray = getObjectInStorage('filteredList-export-data') || [];
