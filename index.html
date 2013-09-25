@@ -24,7 +24,7 @@
       <h2>2. Search through data</h2>
       <div class="margin-top-medium">
         Available data to be exported (click to add)<br />
-        <input ng-model="searchToAdd" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, searchToAdd, 'toAdd', 'added')" />
+        <input ng-model="searchToAdd" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, 'searchToAdd', 'toAdd', 'added')" />
       </div>
       <div class="data-item" ng-repeat="item in data.toAdd | filter:searchToAdd" ng-click="moveItem(item, 'toAdd', 'added')">{{item[column]}}</div>
     </div>
@@ -35,7 +35,7 @@
       <button  ng-click="exportData()">Export</button><br />
       <div class="margin-top-medium">
         Data to be exported (click to remove)<br />
-        <input ng-model="searchAdded" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, searchAdded, 'added', 'toAdd')" />
+        <input ng-model="searchAdded" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, 'searchAdded', 'added', 'toAdd')" />
         <div class="data-item" ng-repeat="item in data.added | filter:searchAdded" ng-click="moveItem(item, 'added', 'toAdd')">{{item[column]}}</div>
       </div>
     </div>

@@ -37,10 +37,11 @@ angular.module('fl', []).controller('MainCtrl', function($scope, $filter) {
     });
   }
 
-  $scope.keyboardMoveItem = function(event, searchValue, from, to) {
+  $scope.keyboardMoveItem = function(event, searchProp, from, to) {
     if (event.keyCode === 13) {
-      var item = $filter('filter', $scope.data[from], searchValue)[0];
+      var item = $filter('filter')($scope.data[from], $scope[searchProp])[0];
       $scope.moveItem(item, from, to);
+      $scope[searchProp] = '';
     }
   }
 
