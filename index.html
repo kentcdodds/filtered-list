@@ -6,8 +6,15 @@
   <link rel="stylesheet" href="./bootstrap.min.css">
   <link rel="stylesheet" href="./styles.css">
   <body ng-controller="MainCtrl">
+    <div class="float-right">
+      <a class="btn" ng-click="clearMostData()">Clear Data Below</a>
+      <a class="btn" ng-click="clearAllData()">Clear All Data</a>
+    </div>
     <h1>Filtered List</h1>
     <hr />
+    <div>
+      Please see the <a href="http://www.github.com/kentcdodds/filtered-list">documentation</a> to see how to use this.
+    </div>
     <h2>1. Import data</h2>
     <textarea ng-model="dataToImport" placeholder="Copy/Paste CSV Data"></textarea><br />
     <a class="btn" ng-click="importData()">Import</a>

@@ -20,6 +20,12 @@ angular.module('fl', []).controller('MainCtrl', function($scope, $filter) {
     }
   }
 
+  function removeObjectInStorage(itemName) {
+    if (localStorage) {
+      localStorage.removeItem(itemName);
+    }
+  }
+
   $scope.importData = function() {
     $scope.data.toAdd = CSV.parse($scope.dataToImport, {headers: true});
     $scope.data.headers = $scope.data.toAdd.headers;
@@ -49,6 +55,32 @@ angular.module('fl', []).controller('MainCtrl', function($scope, $filter) {
       }
       $scope.moveItem(item, from, to);
       $scope[searchProp] = '';
+    }
+  }
+
+  $scope.clearMostData = function() {
+    if (confirm('Have you exported the data?')) {
+      removeObjectInStorage('data');
+      $scope.data = {
+        headers: [],
+        toAdd: [],
+        added: []
+      };
+    }
+  }
+
+  $scope.clearAllData = function() {
+    if (confirm('Have you exported the data?')) {
+      removeObjectInStorage('data');
+      removeObjectInStorage('importData');
+      removeObjectInStorage('column');
+      $scope.data = {
+        headers: [],
+        toAdd: [],
+        added: []
+      };
+      $scope.column = 0;
+      $scope.dataToImport = '';
     }
   }
 
