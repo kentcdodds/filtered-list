@@ -41,7 +41,7 @@ angular.module('fl', []).controller('MainCtrl', function($scope, $filter) {
   }
 
   $scope.exportData = function() {
-    $scope.dataToExport = CSV.stringify($scope.data.added, {
+    $scope.dataToExport = CSV.stringify([$scope.data.headers].concat($scope.data.added), {
       forceQuotes: true
     });
   }
