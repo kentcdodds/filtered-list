@@ -15,13 +15,7 @@ angular.module('fl').directive('ngKeyup', function($parse) {
 angular.module('fl').controller('MainCtrl', function($scope, angularFireAuth, $filter) {
   var ref, dataWatcher, columnWatcher;
   
-  $scope.data = getObjectInStorage('data') || {
-    headers: [],
-    toAdd: [],
-    added: []
-  };
-  $scope.column = getObjectInStorage('column', true) || 0;
-  $scope.dataToImport = getObjectInStorage('importData') || '';
+  $scope.data = getObjectInStorage('data') || getDataDefaults();
   
   
   ref = new Firebase('https://filtered-list.firebaseio.com/');
@@ -52,10 +46,19 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFireAuth, $f
     }
   }
   
+  function getDataDefaults() {
+    return {
+      headers: [],
+      toAdd: [],
+      added: [],
+      dataToImport: '',
+      column: 0
+    };
+  }
+  
   $scope.importData = function() {
-    $scope.data.toAdd = CSV.parse($scope.dataToImport, {headers: true});
+    $scope.data.toAdd = CSV.parse($scope.data.dataToImport, {headers: true});
     $scope.data.headers = $scope.data.toAdd.headers;
-    setObjectInStorage('importData', $scope.dataToImport);
   }
   
   $scope.moveItem = function(item, from, to) {
@@ -84,39 +87,16 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFireAuth, $f
     }
   }
   
-  $scope.clearMostData = function() {
-    if (confirm('Have you exported the data?')) {
-      removeObjectInStorage('data');
-      $scope.data = {
-        headers: [],
-        toAdd: [],
-        added: []
-      };
-    }
-  }
-  
   $scope.clearAllData = function() {
     if (confirm('Have you exported the data?')) {
       removeObjectInStorage('data');
-      removeObjectInStorage('importData');
-      removeObjectInStorage('column');
-      $scope.data = {
-        headers: [],
-        toAdd: [],
-        added: []
-      };
-      $scope.column = 0;
-      $scope.dataToImport = '';
+      $scope.data = getDataDefaults();
     }
   }
   
   dataWatcher = $scope.$watch('data', function(newVal) {
     setObjectInStorage('data', newVal);
   }, true);
-  
-  columnWatcher = $scope.$watch('column', function(newVal) {
-    setObjectInStorage('column', newVal, true);
-  });
   
   $scope.login = function(email, password) {
     angularFireAuth.login('password', {

@@ -15,14 +15,14 @@
       Please see the <a href="http://www.github.com/kentcdodds/filtered-list" target="_blank">documentation</a> to see how to use this.
     </div>
     <h2>1. Import data</h2>
-    <textarea ng-model="dataToImport" placeholder="Copy/Paste CSV Data"></textarea><br />
+    <textarea ng-model="data.dataToImport" placeholder="Copy/Paste CSV Data"></textarea><br />
     <button class="btn" ng-click="importData()">Import</button>
     <div ng-show="data.headers">
       Which column do you want to display?
       <form name="header-selection">
         <span ng-repeat="header in data.headers">
           <label for="{{$index}}">
-            <input type="radio" name="header" ng-model="$parent.column" value="{{$index}}">
+            <input type="radio" name="header" ng-model="$parent.data.column" value="{{$index}}">
             {{header}}
           </label>
         </span>
@@ -35,7 +35,7 @@
         Available data to be exported (click to add)<br />
         <input ng-model="searchToAdd" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, 'searchToAdd', 'toAdd', 'added')" />
       </div>
-      <div class="data-item" ng-repeat="item in data.toAdd | filter:searchToAdd" ng-click="moveItem(item, 'toAdd', 'added')">{{item[column]}}</div>
+      <div class="data-item" ng-repeat="item in data.toAdd | filter:searchToAdd" ng-click="moveItem(item, 'toAdd', 'added')">{{item[data.column]}}</div>
     </div>
 
     <div class="float-right">
@@ -45,7 +45,7 @@
       <div class="margin-top-medium">
         Data to be exported (click to remove)<br />
         <input ng-model="searchAdded" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, 'searchAdded', 'added', 'toAdd')" />
-        <div class="data-item" ng-repeat="item in data.added | filter:searchAdded" ng-click="moveItem(item, 'added', 'toAdd')">{{item[column]}}</div>
+        <div class="data-item" ng-repeat="item in data.added | filter:searchAdded" ng-click="moveItem(item, 'added', 'toAdd')">{{item[data.column]}}</div>
       </div>
     </div>
     
