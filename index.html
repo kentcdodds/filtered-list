@@ -3,7 +3,7 @@
   <head>
     <title>Filtered List</title>
   </head>
-  <link rel="stylesheet" href="./bootstrap.min.css">
+  <link rel="stylesheet" href="./vendor/bootstrap.min.css">
   <link rel="stylesheet" href="./styles.css">
   <body ng-controller="MainCtrl">
     <div class="float-right">
@@ -49,8 +49,9 @@
         <div class="data-item" ng-repeat="item in data.added | filter:searchAdded" ng-click="moveItem(item, 'added', 'toAdd')">{{item[column]}}</div>
       </div>
     </div>
-    <script src="./angular.min.js"></script>
-    <script src="./csv.js"></script>
+    
+    <script src="./vendor/csv.js"></script>
+    <script src="./vendor/angular.min.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
