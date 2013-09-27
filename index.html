@@ -3,12 +3,11 @@
   <head>
     <title>Filtered List</title>
   </head>
-  <link rel="stylesheet" href="./vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="./vendor/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="./styles.css">
   <body ng-controller="MainCtrl">
     <div class="float-right">
-      <a class="btn" ng-click="clearMostData()">Clear Data Below</a>
-      <a class="btn" ng-click="clearAllData()">Clear All Data</a>
+      <button class="btn" bs-modal="'partials/login-modal.html'">Options</button>
     </div>
     <h1>Filtered List</h1>
     <hr />
@@ -17,7 +16,7 @@
     </div>
     <h2>1. Import data</h2>
     <textarea ng-model="dataToImport" placeholder="Copy/Paste CSV Data"></textarea><br />
-    <a class="btn" ng-click="importData()">Import</a>
+    <button class="btn" ng-click="importData()">Import</button>
     <div ng-show="data.headers">
       Which column do you want to display?
       <form name="header-selection">
@@ -42,7 +41,7 @@
     <div class="float-right">
       <h2>3. Export data</h2>
       <textarea ng-model="dataToExport" placeholder="Exported Data appears here as CSV"></textarea><br />
-      <a class="btn" ng-click="exportData()">Export</a><br />
+      <button class="btn" ng-click="exportData()">Export</button><br />
       <div class="margin-top-medium">
         Data to be exported (click to remove)<br />
         <input ng-model="searchAdded" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, 'searchAdded', 'added', 'toAdd')" />
@@ -51,7 +50,14 @@
     </div>
     
     <script type="text/javascript" src="./vendor/csv.js"></script>
+    <script type="text/javascript" src="./vendor/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="./vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="./vendor/angular.min.js"></script>
+    <script type="text/javascript" src="./vendor/firebase.js"></script>
+    <script type="text/javascript" src="./vendor/firebase-simple-login.js"></script>
+    <script type="text/javascript" src="./vendor/angularfire.js"></script>
+    <script type="text/javascript" src="./vendor/angular-strap.min.js"></script>
+    
     <script type="text/javascript" src="./script.js"></script>
   </body>
 </html>
