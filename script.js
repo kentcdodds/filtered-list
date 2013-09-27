@@ -12,26 +12,18 @@ angular.module('fl').directive('ngKeyup', function($parse) {
   };
 });
 
-angular.module('fl').controller('MainCtrl', function($scope, angularFireAuth, $filter) {
+angular.module('fl').controller('MainCtrl', function($scope, angularFire, angularFireAuth, $filter, $routeParams) {
   var ref, dataWatcher, columnWatcher;
-  
-  $scope.data = getObjectInStorage('data') || getDataDefaults();
-  
-  
-  ref = new Firebase('https://filtered-list.firebaseio.com/');
-  angularFireAuth.initialize(ref, {
-    scope: $scope, name: 'user',
-    callback: function(err, user) {
-      console.log('Authenticated!');
-      console.log(arguments);
-    }
-  });
-  
   function setObjectInStorage(itemName, object, noJson) {
     if (localStorage) {
       var valToSet = noJson ? object : JSON.stringify(object)
       localStorage.setItem(itemName, valToSet);
     }
+  function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
   
   function getObjectInStorage(itemName, noJson) {
@@ -44,6 +36,21 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFireAuth, $f
     if (localStorage) {
       localStorage.removeItem(itemName);
     }
+  var dataName = getParameterByName('data') || '';
+  console.log(dataName);
+  
+  $scope.data = getDataDefaults();
+  
+  if (dataName) {
+    ref = new Firebase('https://filtered-list.firebaseio.com/' + dataName);
+    angularFireAuth.initialize(ref, {
+      scope: $scope, name: 'user',
+      callback: function(err, user) {
+        if (user) {      
+          angularFire(ref, $scope, 'data');
+        }
+      }
+    });
   }
   
   function getDataDefaults() {
@@ -62,8 +69,11 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFireAuth, $f
   }
   
   $scope.moveItem = function(item, from, to) {
-    if (!item) {
+    if (!item && $scope.data[from].length > 0) {
       return;
+    }
+    if (!$scope.data[to]) {
+      $scope.data[to] = [];
     }
     $scope.data[to].unshift(item);
     $scope.data[from].splice($scope.data[from].indexOf(item), 1);
@@ -76,7 +86,7 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFireAuth, $f
   }
   
   $scope.keyboardMoveItem = function(event, searchProp, from, to) {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && $scope.data[from].length > 0) {
       var item = $filter('filter')($scope.data[from], $scope[searchProp])[0];
       if (!item) {
         alert($scope[searchProp] + ' is not in this list');

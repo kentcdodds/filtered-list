@@ -9,11 +9,12 @@
       <input name="password" type="password" ng-model="password" placeholder="Password" /><br />
       <button type="submit" class="btn btn-success" ng-click="login(email, password);password=''">Login</button>
     </form>
-    <button class="btn" ng-click="clearAllData();hide()">Clear All Data</button>
   </div>
   <div id="user-options" ng-show="user">
     You're logged in!
-    <button type="button" class="btn btn-danger" ng-click="logout()">Logout</button>
+    <button type="button" class="btn btn-danger" ng-click="logout()">Logout</button><br />
+    <br />
+    <button class="btn" ng-click="clearAllData();hide()">Clear All Data</button>
   </div>
 </div>
 <div class="modal-footer">
