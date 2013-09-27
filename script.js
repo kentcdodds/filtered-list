@@ -1,4 +1,20 @@
-angular.module('fl', []).controller('MainCtrl', function($scope, $filter) {
+angular.module('fl', []);
+
+// Using old version of angular that doesn't have the ngKeyup directive built in.
+angular.module('fl').directive('ngKeyup', function($parse) {
+  return function(scope, element, attr) {
+    var fn = $parse(attr['ngKeyup']);
+    element.bind('keyup', function(event) {
+      scope.$apply(function() {
+        fn(scope, {$event:event});
+      });
+    });
+  };
+});
+
+angular.module('fl').controller('MainCtrl', function($scope, $filter) {
+  var ref, dataWatcher, columnWatcher;
+  
   $scope.data = getObjectInStorage('data') || {
     headers: [],
     toAdd: [],
@@ -84,11 +100,11 @@ angular.module('fl', []).controller('MainCtrl', function($scope, $filter) {
     }
   }
 
-  $scope.$watch('data', function(newVal) {
+  dataWatcher = $scope.$watch('data', function(newVal) {
     setObjectInStorage('data', newVal);
   }, true);
 
-  $scope.$watch('column', function(newVal) {
+  columnWatcher = $scope.$watch('column', function(newVal) {
     setObjectInStorage('column', newVal, true);
   });
 });
