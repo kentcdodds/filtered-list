@@ -13,45 +13,50 @@ angular.module('fl').directive('ngKeyup', function($parse) {
 });
 
 angular.module('fl').controller('MainCtrl', function($scope, angularFire, angularFireAuth, $filter, $routeParams) {
-  var ref, dataWatcher, columnWatcher;
-  function setObjectInStorage(itemName, object, noJson) {
-    if (localStorage) {
-      var valToSet = noJson ? object : JSON.stringify(object)
-      localStorage.setItem(itemName, valToSet);
+  var ref, dataWatcher, columnWatcher, localStorageEnabled = true;
+
+  var localStorageHelper = {
+    set: function(itemName, object, noJson) {
+      if (localStorage && localStorageEnabled) {
+        var valToSet = noJson ? object : JSON.stringify(object)
+        localStorage.setItem(itemName, valToSet);
+      }
+    },
+    get: function(itemName, noJson) {
+      if (localStorage && localStorageEnabled) {
+        return noJson ? localStorage.getItem(itemName) : JSON.parse(localStorage.getItem(itemName));
+      }
+    },
+    remove: function(itemName) {
+      if (localStorage && localStorageEnabled) {
+        localStorage.removeItem(itemName);
+      }
     }
+  }
+
   function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
-  
-  function getObjectInStorage(itemName, noJson) {
-    if (localStorage) {
-      return noJson ? localStorage.getItem(itemName) : JSON.parse(localStorage.getItem(itemName));
-    }
-  }
-  
-  function removeObjectInStorage(itemName) {
-    if (localStorage) {
-      localStorage.removeItem(itemName);
-    }
+
   var dataName = getParameterByName('data') || '';
-  console.log(dataName);
   
   $scope.data = getDataDefaults();
-  
   if (dataName) {
-    ref = new Firebase('https://filtered-list.firebaseio.com/' + dataName);
-    angularFireAuth.initialize(ref, {
-      scope: $scope, name: 'user',
-      callback: function(err, user) {
-        if (user) {      
-          angularFire(ref, $scope, 'data');
-        }
-      }
-    });
+    localStorageEnabled = false;
   }
+
+  ref = new Firebase('https://filtered-list.firebaseio.com/');
+  angularFireAuth.initialize(ref, {
+    scope: $scope, name: 'user',
+    callback: function(err, user) {
+      if (user && !localStorageEnabled) {
+        angularFire(new Firebase('https://filtered-list.firebaseio.com/' + dataName), $scope, 'data');
+      }
+    }
+  });
   
   function getDataDefaults() {
     return {
@@ -61,6 +66,10 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFire, angula
       dataToImport: '',
       column: 0
     };
+  }
+  
+  $scope.options = {
+    buttonText: 'Options'
   }
   
   $scope.importData = function() {
@@ -97,16 +106,20 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFire, angula
     }
   }
   
-  $scope.clearAllData = function() {
-    if (confirm('Have you exported the data?')) {
-      removeObjectInStorage('data');
-      $scope.data = getDataDefaults();
-    }
+  $scope.deleteDataset = function(id) {
+    localStorageHelper.remove('data');
+    $scope.data = getDataDefaults();
   }
   
   dataWatcher = $scope.$watch('data', function(newVal) {
-    setObjectInStorage('data', newVal);
+    localStorageHelper.set('data', newVal);
   }, true);
+  
+  $scope.createUser = function(email, password) {
+    angularFireAuth.createUser(email, password, function(error, user) {
+      console.log('new user created');
+    });
+  }
   
   $scope.login = function(email, password) {
     angularFireAuth.login('password', {

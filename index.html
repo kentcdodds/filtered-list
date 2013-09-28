@@ -6,8 +6,8 @@
   <link rel="stylesheet" href="./vendor/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="./styles.css">
   <body ng-controller="MainCtrl">
-    <div class="float-right">
-      <button class="btn" bs-modal="'partials/login-modal.html'">Options</button>
+    <div class="float-right" ng-show="!localStorageEnabled">
+      <button class="btn" bs-modal="'partials/login-modal.html'">{{options.buttonText}}</button>
     </div>
     <h1>Filtered List</h1>
     <hr />

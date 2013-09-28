@@ -1,6 +1,6 @@
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  <h3>Login</h3>
+  <h3>Options</h3>
 </div>
 <div class="modal-body">
   <div ng-hide="user">
@@ -8,13 +8,13 @@
       <input name="email" type="email" ng-model="email" placeholder="Email" />
       <input name="password" type="password" ng-model="password" placeholder="Password" /><br />
       <button type="submit" class="btn btn-success" ng-click="login(email, password);password=''">Login</button>
+      <button type="button" class="btn btn-info" ng-click="createUser(email, password);password=''">Sign Up</button>
     </form>
   </div>
   <div id="user-options" ng-show="user">
     You're logged in!
     <button type="button" class="btn btn-danger" ng-click="logout()">Logout</button><br />
     <br />
-    <button class="btn" ng-click="clearAllData();hide()">Clear All Data</button>
   </div>
 </div>
 <div class="modal-footer">
