@@ -6,46 +6,10 @@
   <link rel="stylesheet" href="./vendor/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="./styles.css">
   <body ng-controller="MainCtrl">
-    <div class="float-right" ng-show="!localStorageEnabled">
-      <button class="btn" bs-modal="'partials/login-modal.html'">{{options.buttonText}}</button>
-    </div>
     <h1>Filtered List</h1>
-    <hr />
-    <div>
-      Please see the <a href="http://www.github.com/kentcdodds/filtered-list" target="_blank">documentation</a> to see how to use this.
-    </div>
-    <h2>1. Import data</h2>
-    <textarea ng-model="data.dataToImport" placeholder="Copy/Paste CSV Data"></textarea><br />
-    <button class="btn" ng-click="importData()">Import</button>
-    <div ng-show="data.headers">
-      Which column do you want to display?
-      <form name="header-selection">
-        <span ng-repeat="header in data.headers">
-          <label for="{{$index}}">
-            <input type="radio" name="header" ng-model="$parent.data.column" value="{{$index}}">
-            {{header}}
-          </label>
-        </span>
-      </form>
-    </div>
-
-    <div class="float-left">
-      <h2>2. Search through data</h2>
-      <div class="margin-top-medium">
-        Available data to be exported (click to add)<br />
-        <input ng-model="searchToAdd" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, 'searchToAdd', 'toAdd', 'added')" />
-      </div>
-      <div class="data-item" ng-repeat="item in data.toAdd | filter:searchToAdd" ng-click="moveItem(item, 'toAdd', 'added')">{{item[data.column]}}</div>
-    </div>
-
-    <div class="float-right">
-      <h2>3. Export data</h2>
-      <textarea ng-model="dataToExport" placeholder="Exported Data appears here as CSV"></textarea><br />
-      <button class="btn" ng-click="exportData()">Export</button><br />
-      <div class="margin-top-medium">
-        Data to be exported (click to remove)<br />
-        <input ng-model="searchAdded" type="text" placeholder="Search" ng-keyup="keyboardMoveItem($event, 'searchAdded', 'added', 'toAdd')" />
-        <div class="data-item" ng-repeat="item in data.added | filter:searchAdded" ng-click="moveItem(item, 'added', 'toAdd')">{{item[data.column]}}</div>
+    <div data-fade="1" ng-model="tabs.activeTab" bs-tabs>
+      <div ng-repeat="tab in tabs" data-title="{{tab.title}}">
+        <div ng-include src="tab.page"></div>
       </div>
     </div>
     
@@ -58,6 +22,8 @@
     <script type="text/javascript" src="./vendor/angularfire.js"></script>
     <script type="text/javascript" src="./vendor/angular-strap.min.js"></script>
     
-    <script type="text/javascript" src="./script.js"></script>
+    <script type="text/javascript" src="./scripts/app.js"></script>
+    <script type="text/javascript" src="./scripts/directives.js"></script>
+    <script type="text/javascript" src="./scripts/controllers.js"></script>
   </body>
 </html>

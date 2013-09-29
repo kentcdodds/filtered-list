@@ -1,9 +1,7 @@
-<div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  <h3>Options</h3>
-</div>
-<div class="modal-body">
+<div>
   <div ng-hide="user">
+    <h2>Login</h2>
+    <p class="muted">For some sweet features...</p>
     <form id="login-form">
       <input name="email" type="email" ng-model="email" placeholder="Email" />
       <input name="password" type="password" ng-model="password" placeholder="Password" /><br />
@@ -16,7 +14,15 @@
     <button type="button" class="btn btn-danger" ng-click="logout()">Logout</button><br />
     <br />
   </div>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn" ng-click="hide()">Close</button>
+  <div>
+    <h2>Dataset Management</h2>
+    <button type="button" class="btn btn-success" ng-click="editDataset()">+ Add New Dataset</button>
+    <p>Select a dataset</p>
+    <div>
+      <label class="radio" ng-repeat="dataset in datasets">
+        <input type="radio" name="datasetRadios" ng-model="currentDataIndex" value="{{$index}}">
+        {{dataset.name}} <a ng-click="editDataset(dataset, $index)">Edit</a>
+      </label>
+    </div>
+  </div>
 </div>
