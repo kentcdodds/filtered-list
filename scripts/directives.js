@@ -24,7 +24,7 @@ angular.module('fl').directive('uxTableFilter', function($filter) {
               '</tr>',
             '</thead>',
             '<tbody>',
-              '<tr ng-repeat="row in data | filter:searchModel" ng-click="clicked({$event: $event, item: row})">',
+              '<tr ng-repeat="row in data | filter:searchModel" ng-click="clicked(row)">',
                 '<td>{{$index + 1}}</td>',
                 '<td ng-repeat="cell in row">{{cell}}</td>',
               '</tr>',
@@ -35,7 +35,7 @@ angular.module('fl').directive('uxTableFilter', function($filter) {
     scope: {
       'data': '=uxTableFilter',
       'enterPressed': '&tfReturnCallback',
-      'clicked': '&tfClickCallback',
+      'itemClicked': '&tfClickCallback',
       'headers': '=tfHeaders'
     },
     link: function($scope, element, attr) {
@@ -45,6 +45,12 @@ angular.module('fl').directive('uxTableFilter', function($filter) {
             var item = $filter('filter')($scope.data, $scope.searchModel)[0];
             $scope.enterPressed({$event: $event, item: item, searchValue: $scope.searchModel});
           }
+        }
+      }
+      $scope.clicked = function(event, item) {
+        if ($scope.itemClicked) {
+          $scope.searchModel = '';
+          $scope.itemClicked({item: item});
         }
       }
     }
