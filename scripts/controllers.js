@@ -20,10 +20,6 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFire, $filte
     $location.path(path);
   }
 
-  $scope.unbindFirebase = function() {
-    //ref;
-  }
-
   function setupFirebase(name, password) {
     if (!name) {
       return;
@@ -76,8 +72,10 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFire, $filte
   }
   
   $scope.deleteDataset = function(id) {
-    ref.remove();
-    $scope.go('/');
+    if ($window.confirm('Are you sure?')) {
+      ref.remove();
+      $scope.go('/');
+    }
   }
 
 });

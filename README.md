@@ -20,9 +20,17 @@ Once you've moved everything from the search column to the export column you can
 
 ##Other stuff
 
-###Local Storage
+###Real-time online
 
-Because sometimes you may accidentally refresh your browser, if you're using a modern browser with local storage enabled, you can leave and come back later and all data will be saved where you left it. A nice feature I must say! To clear this, simply click either the "Clear Data Below" or "Clear All Data" button. The main difference between these buttons is that the "Clear Data Below" button will not clear the text field that contains the csv info you pasted in the first place.
+The data is synchronized in real time with our secure servers. So you can have multiple people editing the data simultaneously.
+
+###Password
+
+DON'T forget the password you set in the first place. It's the ONLY way you can access your data...
+
+###More features
+
+We're still in beta. But this should work pretty well...
 
 ##License
 

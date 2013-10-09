@@ -42,12 +42,13 @@ angular.module('fl').directive('uxTableFilter', function($filter) {
       if ($scope.enterPressed) {
         $scope.onInputKeyup = function($event) {
           if (event.keyCode === 13) {
+            $scope.searchModel = '';
             var item = $filter('filter')($scope.data, $scope.searchModel)[0];
-            $scope.enterPressed({$event: $event, item: item, searchValue: $scope.searchModel});
+            $scope.enterPressed({item: item});
           }
         }
       }
-      $scope.clicked = function(event, item) {
+      $scope.clicked = function(item) {
         if ($scope.itemClicked) {
           $scope.searchModel = '';
           $scope.itemClicked({item: item});

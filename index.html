@@ -20,7 +20,7 @@
     <div ng-show="dataset">
       <h2>Dataset: {{dataset.name}}</h2>
       <a class="btn" href="/">Create new dataset</a>
-      <div data-fade="1" ng-model="tabs.activeTab" bs-tabs>
+      <div data-fade="1" ng-model="tabs.activeTab" bs-tabs class="margin-top-medium">
         <div ng-repeat="tab in tabs" data-title="{{tab.title}}">
           <div ng-include src="tab.page"></div>
         </div>
