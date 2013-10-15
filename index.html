@@ -11,13 +11,21 @@
       <h2>Create New Dataset</h2>
       <p class="muted">Stored on our secure servers</p>
       <form id="create-dataset-form">
-        <input name="dataset-name" type="text" ng-model="importDataset.name" placeholder="Dataset Name" /><br />
-        <input name="password" type="text" ng-model="importDataset.password" placeholder="Password" /><br />
+        <span class="muted" style="margin-left:-9px"> * <input name="dataset-name" type="text" ng-model="importDataset.name" placeholder="Dataset Name" /><br />
+        <span class="muted" style="margin-left:-9px"> * <input name="password" type="text" ng-model="importDataset.password" placeholder="Password" /><br />
         <textarea ng-model="importDataset.dataSource" placeholder="Copy/Paste CSV Data"></textarea><br />
         <button type="submit" class="btn btn-success" ng-click="createDataset(importDataset)">Create</button>
       </form>
+      <br />
+      <br />
+      <div class="muted ng-cloak" style="margin-left:-8px">
+        * These are required. Make sure you keep them in a safe place.
+      </div>
+      <div class="muted ng-cloak">
+        It's the <strong>only</strong> way to retrieve your data!
+      </div>
     </div>
-    <div ng-show="dataset">
+    <div ng-show="dataset" class="ng-cloak">
       <h2>Dataset: {{dataset.name}}</h2>
       <a class="btn" href="/">Create new dataset</a>
       <div data-fade="1" ng-model="tabs.activeTab" bs-tabs class="margin-top-medium">

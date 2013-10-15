@@ -27,7 +27,10 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFire, $filte
     password = password || (function() {
       return $window.prompt('What\'s the password for dataset "' + name + '?"');
     })();
-    ref = new Firebase('https://filtered-list.firebaseio.com/datasets/' + name + '/' + password);
+    if (!password) {
+      return;
+    }
+    ref = new Firebase('https://ais-event-checkin.firebaseio.com/datasets/' + name + '/' + password);
     angularFire(ref, $scope, 'dataset');
 
     dataWatcher = $scope.$watch('dataset', function() {
@@ -51,6 +54,10 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFire, $filte
   ];
 
   $scope.createDataset = function(data) {
+    if (!data.password || !data.name) {
+      alert('Cannot create a dataset without a name and password');
+      return;
+    }
     data.toAdd = CSV.parse(data.dataSource, {headers: true});
     data.headers = data.toAdd.headers;
     delete data.toAdd.headers;
@@ -74,7 +81,7 @@ angular.module('fl').controller('MainCtrl', function($scope, angularFire, $filte
   $scope.deleteDataset = function(id) {
     if ($window.confirm('Are you sure?')) {
       ref.remove();
-      $scope.go('/');
+      $scope.go($location.pathname);
     }
   }
 

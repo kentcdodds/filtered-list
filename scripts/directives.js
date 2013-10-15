@@ -15,7 +15,7 @@ angular.module('fl').directive('uxTableFilter', function($filter) {
     restrict: 'A',
     template: [
         '<div>',
-          '<input ng-model="searchModel" type="text" placeholder="Search" ng-keyup="onInputKeyup($event)" />',
+          '<input ng-model="searchModel" type="text" placeholder="Search" ng-keyup="onInputKeyup($event, searchModel)" />',
           '<table class="table table-hover">',
             '<thead ng-show="headers">',
               '<tr>',
@@ -40,10 +40,10 @@ angular.module('fl').directive('uxTableFilter', function($filter) {
     },
     link: function($scope, element, attr) {
       if ($scope.enterPressed) {
-        $scope.onInputKeyup = function($event) {
+        $scope.onInputKeyup = function($event, searchText) {
           if (event.keyCode === 13) {
             $scope.searchModel = '';
-            var item = $filter('filter')($scope.data, $scope.searchModel)[0];
+            var item = $filter('filter')($scope.data, searchText)[0];
             $scope.enterPressed({item: item});
           }
         }
