@@ -6,13 +6,13 @@ A simple app where you can give it data from a csv, check things off, and export
 
 ###1. Import data
 
-Get a CSV file and open it in any text editor. Copy all of that text and past it into the Import Data text box. Press the "Import" button.
+Get a CSV file and open it in any text editor. Copy all of that text and paste it into the Import Data text box. Press the "Import" button.
 
 You will then see the headings for the content you imported, select the radio button that corresponds with the column you want to see in the search filter below.
 
 ###2. Search through data
 
-Simply type and click or hit <kbd>enter</kbd> to add data to the export list. The search filter will search based on any data for a given row in the data you exported. For example, if you're data has names and phone numbers, you could display the names and search with the phone numbers. Clicking <kbd>enter</kbd> will cause the item at the top of the list to be added to the export list.
+Simply type and click or hit <kbd>enter</kbd> to add data to the export list. The search filter will search based on any data for a given row in the data you exported. For example, if your data has names and phone numbers, you could display the names and search with the phone numbers. Clicking <kbd>enter</kbd> will cause the item at the top of the list to be added to the export list.
 
 ###3. Export Data
 
